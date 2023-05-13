@@ -151,5 +151,4 @@ It is a government-funded program in Australia that provides support and funding
 The aim of the scheme is to help people with disabilities to live more independently and to improve their access to services and support.'), 
 ('how can I get NDIS funding?', 'To obtain NDIS funding, you need to complete an Access Request Form and submit it to the NDIS. Once your application is approved, you can then create a plan that outlines the supports you need. 
 Once your plan is approved, you can start using your NDIS funding on the supports set out in your plan.')]
-
 """
