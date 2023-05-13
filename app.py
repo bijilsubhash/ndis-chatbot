@@ -10,8 +10,9 @@ import faiss
 import openai
 from langchain.vectorstores import FAISS
 from langchain.embeddings import OpenAIEmbeddings
-from langchain import OpenAI
-from langchain.chains import VectorDBQAWithSourcesChain
+from langchain import OpenAI, PromptTemplate
+#from langchain.chains import VectorDBQAWithSourcesChain
+from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.text_splitter import CharacterTextSplitter
 
 import pickle
@@ -72,8 +73,28 @@ args = parser.parse_args()
 with open("faiss_store.pkl", "rb") as f:
     store = pickle.load(f)
 
-chain = VectorDBQAWithSourcesChain.from_llm(llm=OpenAI(temperature=0), vectorstore=store)
+template = """You are a chatbot having a conversation with a human. If the
+question cannot be answered using the information provided answer
+with "I don't know"
+
+{summaries}
+Human: {question}
+Chatbot:"""
+
+
+chain = RetrievalQAWithSourcesChain.from_chain_type(
+    llm=OpenAI(temperature=0),
+    chain_type="stuff",
+    retriever=store.as_retriever(),
+    chain_type_kwargs={
+        "prompt": PromptTemplate(
+            template=template,
+            input_variables=["summaries", "question"],
+        ),
+    },
+)
+
 result = chain({"question": args.question})
 
 print(f"Answer: {result['answer']}")
-print(f"Sources: {result['sources']}")
+# print(f"Sources: {result['sources']}")
