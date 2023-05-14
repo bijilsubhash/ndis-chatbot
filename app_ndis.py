@@ -11,6 +11,13 @@ from langchain.chains.question_answering import load_qa_chain
 import csv
 import pickle
 
+import openai
+import os
+from dotenv import load_dotenv # Add
+load_dotenv() # Add
+openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
+print(openai.api_key)
+
 pages = []
 
 #reading the site content from csv to a list
@@ -98,11 +105,11 @@ chatbot = ConversationalRetrievalChain(
 # create a chat history buffer
 chat_history = []
 # gather user input for the first question to kick off
-question = input('Hi! How can I help you today?')
+question = input('Hi there, I am a chatbot who can access the NDIS webpages for you. What can I help you with today?\n\n')
  
 # keep the bot running in a loop to simulate a conversation
 while True:
     result = chatbot({"question": question, "chat_history": chat_history})
     print("\n")
     chat_history.append((result["question"], result["answer"]))
-    question = input()t
+    question = input()
