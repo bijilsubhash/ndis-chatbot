@@ -49,10 +49,10 @@ pinecone.init(api_key=PINECONE_API_KEY,  environment=PINECONE_ENV)
 index_name = "ndis-chatbot"
 
 # create the vectorstore to use as the index --- DONE 
-# db = Pinecone.from_documents(texts, embeddings, index_name=index_name)
+db = Pinecone.from_documents(texts, embeddings, index_name=index_name)
 
-#if you already have an index, you can load it like this --- USE THIS
-db = Pinecone.from_existing_index(index_name, embeddings)
+# #if you already have an index, you can load it like this --- USE THIS
+# db = Pinecone.from_existing_index(index_name, embeddings)
 
 #expose this index in a retriever interface
 retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
